@@ -18,6 +18,7 @@ const validGuest = {
   major: 'major1',
   generation: '20xx',
   phone: '0812xxxxxxxx',
+  email: 'guest@mail.com',
 };
 
 const postGuest = (guest = validGuest) => {
@@ -46,6 +47,7 @@ describe('Add Guest', () => {
       major: 'major1',
       generation: '20xx',
       phone: '0812xxxxxxxx',
+      email: 'guest@mail.com',
     });
     expect(response.status).toBe(400);
   });
@@ -55,6 +57,7 @@ describe('Add Guest', () => {
       name: 'guest1',
       generation: '20xx',
       phone: '0812xxxxxxxx',
+      email: 'guest@mail.com',
     });
     expect(response.status).toBe(400);
   });
@@ -64,6 +67,7 @@ describe('Add Guest', () => {
       name: 'guest1',
       major: 'major1',
       phone: '0812xxxxxxxx',
+      email: 'guest@mail.com',
     });
     expect(response.status).toBe(400);
   });
@@ -73,16 +77,32 @@ describe('Add Guest', () => {
       name: 'guest1',
       major: 'major1',
       generation: '20xx',
+      email: 'guest@mail.com',
+    });
+    expect(response.status).toBe(400);
+  });
+
+  it('returns error 400 when email is null', async () => {
+    const response = await postGuest({
+      name: 'guest1',
+      major: 'major1',
+      generation: '20xx',
+      phone: '0812xxxxxxxx',
     });
     expect(response.status).toBe(400);
   });
 
   it.each`
-    field                   | value             | expectedMessage
-    ${'name'}               | ${null}           | ${'Name cannot be null'}
-    ${'major'}              | ${null}           | ${'Major cannot be null'}
-    ${'generation'}         | ${null}           | ${'Generation cannot be null'}
-    ${'phone'}              | ${null}           | ${'Phone cannot be null'}
+    field                   | value                   | expectedMessage
+    ${'name'}               | ${null}                 | ${'Name cannot be null'}
+    ${'major'}              | ${null}                 | ${'Major cannot be null'}
+    ${'generation'}         | ${null}                 | ${'Generation cannot be null'}
+    ${'phone'}              | ${null}                 | ${'Phone cannot be null'}
+    ${'phone'}              | ${null}                 | ${'Phone cannot be null'}
+    ${'email'}              | ${null}                 | ${'Email cannot be null'}
+    ${'email'}              | ${'a.com'}              | ${'Email must be valid'}
+    ${'email'}              | ${'a.a.com'}            | ${'Email must be valid'}
+    ${'email'}              | ${'a@com'}              | ${'Email must be valid'}
   `(
     'returns $expectedMessage when $field is $value',
     async ({ field, value, expectedMessage }) => {
@@ -91,6 +111,7 @@ describe('Add Guest', () => {
         major: 'major1',
         generation: '20xx',
         phone: '0812xxxxxxxx',
+        email: 'guest1@mail.com',
       };
       guest[field] = value;
       const response = await postGuest(guest);
@@ -98,5 +119,4 @@ describe('Add Guest', () => {
       expect(body.validationErrors[field]).toBe(expectedMessage);
     }
   );
-
 });

@@ -20,6 +20,9 @@ Guest.init(
     phone: {
       type: Sequelize.STRING,
     },
+    email: {
+      type: Sequelize.STRING,
+    },
   },
   {
     sequelize,
