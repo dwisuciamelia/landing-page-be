@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "",
-    "database": "landing_page",
+    "database": "landing_page_hcd",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }

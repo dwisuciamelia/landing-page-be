@@ -1,6 +1,6 @@
 module.exports = {
   database: {
-    database: 'landing_page',
+    database: 'landing_page_hcd',
     username: 'root',
     password: '',
     dialect: 'mysql',
